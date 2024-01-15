@@ -16,7 +16,6 @@ function registerUser($conn, $name, $email, $password)
     $stmt->bind_param("sss", $name, $email, $hashedPassword);
     $stmt->execute();
 }
-
 // Funktion för att kontrollera och logga in en användare
 function loginUser($conn, $email, $password)
 {
