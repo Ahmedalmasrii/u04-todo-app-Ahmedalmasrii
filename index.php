@@ -1,28 +1,18 @@
-<?php include "connect.php"; ?>
+<?php
+// Startar en ny session eller forsätter med den befintliga sessionen
+session_start();
 
-<!DOCTYPE html>
-<html lang="en">
+// Inkluderar filen med anslutningsdetaljer till  själva databasen
+include "connect.php";
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/style.css">
-    <title>Document</title>
-</head>
+// Denna funktion är för att registrera en ny användare i databasen
+function registerUser($conn, $name, $email, $password)
+{
+    // Krypterar användarens lösenordet med bcrypt
+    $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-<body>
-    <div class="container">
-        <div class="todo-app">
-            <h2>To-do list <img src="/images/clipboard-list-solid.svg" alt="icon"></h2>
-
-            <form action="welcome.php" method="post">
-                Name: <input type="text" name="name"><br>
-                E-mail: <input type="text" name="email"><br>
-                <input type="submit">
-            </form>
-        </div>
-
-    </div>
-</body>
-
-</html>
+    // Förbereder ett SQL-uttalande för att infoga användardata i tabellen 'users'
+    $stmt = $conn->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $name, $email, $hashedPassword);
+    $stmt->execute();
+}
