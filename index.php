@@ -67,6 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Omdirigerar till welcome.php vid en lyckad inloggning
             header("Location: welcome.php");
             exit();
+            
         } else {
             echo "Inloggningen misslyckades. Var god kontrollera din e-post och ditt lösenord.";
         }
