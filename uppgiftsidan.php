@@ -150,7 +150,6 @@ $conn->close();
     </form>
 
     <hr>
-
     <!-- Formulär för att visa alla uppgifter och utföra åtgärder -->
     <form method="post">
         <button type="submit" name="showAllTasks">Visa alla uppgifter</button>
