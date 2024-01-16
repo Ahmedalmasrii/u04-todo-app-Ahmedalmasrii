@@ -72,3 +72,57 @@ function getTasks($conn)
     $result = $conn->query("SELECT * FROM todo");
     return $result->fetch_all(MYSQLI_ASSOC);
 }
+
+// Hantera formulärinskick
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Lägga till en ny uppgift
+    if (isset($_POST['addTask'])) {
+        $newTask = $_POST['newTask'];
+        addTask($conn, $newTask);
+    }
+
+    // **Visa och hantera alla uppgifter:**
+    // Om användaren har skickat in formuläret för att visa alla uppgifter (`showAllTasks`-knappen har tryckts),
+    // hämtas alla uppgifter från databasen. Varje uppgift presenteras med dess namn, status, datum och en bild
+    // som visar om den är klar eller ej. För varje uppgift finns även möjlighet att markera som slutförd,
+    // uppdatera eller radera den genom ett formulär. All information visas i en HTML-container med klassen `task-container`.
+    if (isset($_POST['showAllTasks'])) {
+        $tasks = getTasks($conn);
+        foreach ($tasks as $task) {
+            echo "<div class='task-container'>
+                <!-- <p class='task-id'>ID: " . $task['ID'] . "</p> -->
+                <p class='task-name'>Uppgift: " . $task['attgora'] . "</p>
+                <p class='task-status'>Klar: " . ($task['klar'] ? 'Ja' : 'Nej') . "</p>
+                <p class='task-date'>Datum: " . $task['datum'] . "</p>
+                <img src='" . ($task['klar'] ? './images/doneicon.png' : './images/notdone.png') . "' alt='Status Image'>
+                <form method='post'>
+                    <input type='hidden' name='taskId' value='" . $task['ID'] . "'>
+                    <button type='submit' name='completeTask'>Markera som slutförd</button>
+                    <input type='text' name='updatedTask' placeholder='Redigera uppgift'>
+                    <button type='submit' name='updateTask'>Updatera Uppgift</button>
+                    <button type='submit' name='deleteTask'>Radera</button>
+                </form>
+            </div>";
+        }
+    }
+
+
+    // Markera en uppgift som klar
+    if (isset($_POST['completeTask'])) {
+        $taskId = $_POST['taskId'];
+        completeTask($conn, $taskId);
+    }
+
+    // Uppdatera en uppgift
+    if (isset($_POST['updateTask'])) {
+        $taskId = $_POST['taskId'];
+        $updatedTask = $_POST['updatedTask'];
+        updateTask($conn, $taskId, $updatedTask);
+    }
+
+    // Ta bort en uppgift
+    if (isset($_POST['deleteTask'])) {
+        $taskId = $_POST['taskId'];
+        deleteTask($conn, $taskId);
+    }
+}
