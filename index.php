@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="container">
         <div class="todo-app">
-            <h2>Att göra-lista <img src="/images/clipboard-list-solid.svg" alt="ikon"></h2>
+            <h2>Att göra-lista </h2>
 
             <!-- Registreringsformulär  för att skapa konto -->
             <form action="" method="post">
