@@ -80,7 +80,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $newTask = $_POST['newTask'];
         addTask($conn, $newTask);
     }
-
     // **Visa och hantera alla uppgifter:**
     // Om användaren har skickat in formuläret för att visa alla uppgifter (`showAllTasks`-knappen har tryckts),
     // hämtas alla uppgifter från databasen. Varje uppgift presenteras med dess namn, status, datum och en bild
