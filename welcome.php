@@ -1,10 +1,10 @@
-<html>
+<?php
+// Startar  en sessionshantering för att spåra användarsessioner som är aktiva
+session_start();
 
-<body>
+//  kopplar till connect.php fil som innehåller anslutningsformulär till själva databasen 
+include "connect.php";
 
-    Welcome <?php echo $_POST["name"]; ?><br>
-    Your email address is: <?php echo $_POST["email"]; ?>
-
-</body>
-
-</html>
+//Detta är default värden för name och email 
+$name = "Guest";
+$email = "N/A";
