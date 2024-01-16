@@ -65,3 +65,10 @@ function deleteTask($conn, $id)
         echo "<div class='error-message'>$errorMessage</div>";
     }
 }
+
+// Funktion för att hämta alla uppgifter från databasen
+function getTasks($conn)
+{
+    $result = $conn->query("SELECT * FROM todo");
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
