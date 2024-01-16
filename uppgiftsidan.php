@@ -72,7 +72,6 @@ function getTasks($conn)
     $result = $conn->query("SELECT * FROM todo");
     return $result->fetch_all(MYSQLI_ASSOC);
 }
-
 // Hantera formulärinskick
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Lägga till en ny uppgift
