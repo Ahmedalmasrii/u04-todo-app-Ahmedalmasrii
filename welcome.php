@@ -38,3 +38,8 @@ if (isset($_SESSION['userId'])) {
     // Om användar-ID inte är satt i sessionen, meddela användaren att idet inte är satt i session
     echo "Användar-ID är inte satt i sessionen.";
 }
+
+// Stäng anslutningen till databasen
+$conn->close();
+?>
+
