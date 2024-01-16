@@ -72,6 +72,7 @@ function getTasks($conn)
     $result = $conn->query("SELECT * FROM todo");
     return $result->fetch_all(MYSQLI_ASSOC);
 }
+
 // Hantera formulärinskick
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Lägga till en ny uppgift
@@ -79,6 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $newTask = $_POST['newTask'];
         addTask($conn, $newTask);
     }
+
     // **Visa och hantera alla uppgifter:**
     // Om användaren har skickat in formuläret för att visa alla uppgifter (`showAllTasks`-knappen har tryckts),
     // hämtas alla uppgifter från databasen. Varje uppgift presenteras med dess namn, status, datum och en bild
@@ -124,3 +126,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         deleteTask($conn, $taskId);
     }
 }
+
+// Stäng anslutningen till databasen
+$conn->close();
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <title>Att göra!</title>
+</head>
+
+<body>
+    <!-- Formulär för att lägga till en ny uppgift -->
+    <form method="post">
+        <label for="newTask">Ny uppgift:</label>
+        <input type="text" name="newTask" required>
+        <button type="submit" name="addTask">Lägg till uppgift</button>
+    </form>
+
+    <hr>
+
+    <!-- Formulär för att visa alla uppgifter och utföra åtgärder -->
+    <form method="post">
+        <button type="submit" name="showAllTasks">Visa alla uppgifter</button>
+    </form>
+
+</body>
+
+</html>
