@@ -33,3 +33,35 @@ function completeTask($conn, $id)
         echo "<div class='error-message'>$errorMessage</div>";
     }
 }
+
+// Funktion för att uppdatera en befintlig uppgift
+function updateTask($conn, $id, $newTask)
+{
+    $stmt = $conn->prepare("UPDATE todo SET attgora = ? WHERE ID = ?");
+    $stmt->bind_param("si", $newTask, $id);
+
+    // Kolla om uppgiften har uppdaterats, annars visa ett felmeddelande
+    if ($stmt->execute()) {
+        $message = "Uppgiften är nu uppdaterad!";
+        echo "<div class='update-message'>$message</div>";
+    } else {
+        $errorMessage = "Oj då! Något gick fel när du försökte uppdatera uppgiften: " . $stmt->error;
+        echo "<div class='error-message'>$errorMessage</div>";
+    }
+}
+
+// Funktion för att ta bort en uppgift
+function deleteTask($conn, $id)
+{
+    $stmt = $conn->prepare("DELETE FROM todo WHERE ID = ?");
+    $stmt->bind_param("i", $id);
+
+    // Kolla om uppgiften har tagits bort, annars visa ett felmeddelande
+    if ($stmt->execute()) {
+        $message = "Borttagning lyckad! Uppgiften är nu borttagen!";
+        echo "<div class='success-message'>$message</div>";
+    } else {
+        $errorMessage = "Oops! Något gick fel när du försökte ta bort uppgiften: " . $stmt->error;
+        echo "<div class='error-message'>$errorMessage</div>";
+    }
+}
