@@ -18,3 +18,11 @@ body {
     padding: 20px;
     text-align: center;
 }
+
+.page-title {
+    font-size: 2.5em;
+    color: #2c3e50;
+    margin-bottom: 0.5em;
+    animation: text-flicker 2s infinite alternate;
+}
+
