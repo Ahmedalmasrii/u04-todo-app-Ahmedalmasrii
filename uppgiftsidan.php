@@ -89,45 +89,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['showAllTasks'])) {
         $tasks = getTasks($conn);
         foreach ($tasks as $task) {
-            echo "<div class='task-container'>
-                <!-- <p class='task-id'>ID: " . $task['ID'] . "</p> -->
-                <p class='task-name'>Uppgift: " . $task['attgora'] . "</p>
-                <p class='task-status'>Klar: " . ($task['klar'] ? 'Ja' : 'Nej') . "</p>
-                <p class='task-date'>Datum: " . $task['datum'] . "</p>
-                <img src='" . ($task['klar'] ? './images/doneicon.png' : './images/notdone.png') . "' alt='Status Image'>
-                <form method='post'>
-                    <input type='hidden' name='taskId' value='" . $task['ID'] . "'>
-                    <button type='submit' name='completeTask'>Markera som slutförd</button>
-                    <input type='text' name='updatedTask' placeholder='Redigera uppgift'>
-                    <button type='submit' name='updateTask'>Updatera Uppgift</button>
-                    <button type='submit' name='deleteTask'>Radera</button>
-                </form>
-            </div>";
+            echo "<div class='task-container custom-task-container'>
+            <!-- <p class='task-id'>ID: " . $task['ID'] . "</p> -->
+            <p class='task-name'>Uppgift: " . $task['attgora'] . "</p>
+            <p class='task-status'>Klar: " . ($task['klar'] ? 'Ja' : 'Nej') . "</p>
+            <p class='task-date'>Datum: " . $task['datum'] . "</p>
+            <img src='" . ($task['klar'] ? './images/doneicon.png' : './images/notdone.png') . "' alt='Status Image'>
+            <form method='post'>
+                <input type='hidden' name='taskId' value='" . $task['ID'] . "'>
+                <button type='submit' name='completeTask'>Markera som slutförd</button>
+                <input type='text' name='updatedTask' placeholder='Redigera uppgift'>
+                <button type='submit' name='updateTask'>Updatera Uppgift</button>
+                <button type='submit' name='deleteTask'>Radera</button>
+            </form>
+        </div>
+        ";
         }
     }
 
 
-    // Markera en uppgift som klar
+    // Markerar en uppgift som klar
     if (isset($_POST['completeTask'])) {
         $taskId = $_POST['taskId'];
         completeTask($conn, $taskId);
     }
 
-    // Uppdatera en uppgift
+    // Uppdaterar en uppgift
     if (isset($_POST['updateTask'])) {
         $taskId = $_POST['taskId'];
         $updatedTask = $_POST['updatedTask'];
         updateTask($conn, $taskId, $updatedTask);
     }
 
-    // Ta bort en uppgift
+    // Tar bort en uppgift
     if (isset($_POST['deleteTask'])) {
         $taskId = $_POST['taskId'];
         deleteTask($conn, $taskId);
     }
 }
 
-// Stäng anslutningen till databasen
+// Stänger anslutningen till databasen
 $conn->close();
 ?>
 
@@ -142,19 +143,15 @@ $conn->close();
 </head>
 
 <body>
-    <!-- Formulär för att lägga till en ny uppgift -->
-    <form method="post">
+    <form method="post" class="form uppgiftsidan">
         <label for="newTask">Ny uppgift:</label>
         <input type="text" name="newTask" required>
-        <button type="submit" name="addTask">Lägg till uppgift</button>
+        <button type="submit" name="addTask" class="button">Lägg till uppgift</button>
     </form>
-
     <hr>
-    <!-- Formulär för att visa alla uppgifter och utföra åtgärder -->
-    <form method="post">
-        <button type="submit" name="showAllTasks">Visa alla uppgifter</button>
+    <form method="post" class="form uppgiftsidan">
+        <button type="submit" name="showAllTasks" class="button">Visa alla uppgifter</button>
     </form>
-
 </body>
 
 </html>
