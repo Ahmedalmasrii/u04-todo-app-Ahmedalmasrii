@@ -85,7 +85,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <div class="centered-container">
-     
+        <h2 class="page-title">Att göra-lista</h2>
+      
     </div>
 </body>
 </html>
