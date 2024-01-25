@@ -26,3 +26,26 @@ body {
     animation: text-flicker 2s infinite alternate;
 }
 
+.form-container {
+    background: #f8f8f8;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+}
+.form {
+    margin-top: 20px;
+    padding: 20px;
+    text-align: center;
+    display: contents;
+}
+.form input[type="text"],
+.form input[type="password"],
+.form input[type="submit"] {
+    width: 70%;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
