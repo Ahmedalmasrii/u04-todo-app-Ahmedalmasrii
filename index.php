@@ -86,7 +86,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="centered-container">
         <h2 class="page-title">Att göra-lista</h2>
-      
+        <div class="form-container">
+            <form action="" method="post" class="form">
+                <h3>Registrera</h3>
+                Namn: <input type="text" name="name"><br>
+                E-post: <input type="text" name="email"><br>
+                Lösenord: <input type="password" name="password"><br>
+                <input type="submit" name="register" value="Registrera" class="button">
+            </form>
+            <hr>
+            <form action="" method="post" class="form">
+                <h3>Logga in</h3>
+                E-post: <input type="text" name="loginEmail"><br>
+                Lösenord: <input type="password" name="loginPassword"><br>
+                <input type="submit" name="login" value="Logga in" class="button">
+            </form>
+        </div>
     </div>
 </body>
 </html>
