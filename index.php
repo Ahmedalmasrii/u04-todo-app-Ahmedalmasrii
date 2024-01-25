@@ -102,6 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="submit" name="login" value="Logga in" class="button">
             </form>
         </div>
+        
     </div>
 </body>
 </html>
