@@ -77,39 +77,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="sv">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/style.css">
     <title>Dokument</title>
 </head>
-
 <body>
-    <div class="container">
-        <div class="todo-app">
-            <h2>Att göra-lista </h2>
-
-            <!-- Registreringsformulär  för att skapa konto -->
-            <form action="" method="post">
-                <h3>Registrera</h3>
-                Namn: <input type="text" name="name"><br>
-                E-post: <input type="text" name="email"><br>
-                Lösenord: <input type="password" name="password"><br>
-                <input type="submit" name="register" value="Registrera">
-            </form>
-
-            <hr>
-
-            <!-- Inloggningsformulär -->
-            <form action="" method="post">
-                <h3>Logga in</h3>
-                E-post: <input type="text" name="loginEmail"><br>
-                Lösenord: <input type="password" name="loginPassword"><br>
-                <input type="submit" name="login" value="Logga in">
-            </form>
-        </div>
+    <div class="centered-container">
+     
     </div>
 </body>
-
 </html>
