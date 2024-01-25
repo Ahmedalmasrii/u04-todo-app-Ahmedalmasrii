@@ -1,0 +1,12 @@
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(45deg, #83a4d4, #b6fbff);
+    background-size: 200% 200%;
+    animation: moving-gradient 15s ease infinite;
+    color: #333;
+    line-height: 1.6;
+    text-align: center;
+    padding-top: 50px;
+}
+
