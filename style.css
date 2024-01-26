@@ -174,3 +174,55 @@ hr {
     border-top: 1px solid #ddd;
 }
 
+/* Animation */
+@keyframes text-flicker {
+    0%, 100% { 
+        text-shadow: 0 0 4px #fff, 
+                     0 0 11px #fff, 
+                     0 0 19px #ffa726, 
+                     0 0 40px #ffa726, 
+                     0 0 80px #ffa726, 
+                     0 0 90px #ffa726; 
+    }
+    50% { 
+        text-shadow: 0 0 2px #fff, 
+                     0 0 10px #fff, 
+                     0 0 18px #ffa726, 
+                     0 0 35px #ffa726, 
+                     0 0 75px #ffa726, 
+                     0 0 85px #ffa726; 
+    }
+}
+
+@keyframes moving-gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+
+/* Responsiv design */
+@media screen and (max-width: 768px) {
+    .centered-container,
+    .form-container,
+    .task-container {
+        width: 100%;
+        padding: 0px;
+    }
+
+    .form {
+        width: auto; 
+    }
+
+    .form input[type="text"],
+    .form input[type="password"],
+    .form input[type="submit"],
+    .button {
+        padding: 12px; 
+    }
+
+    .page-title {
+        font-size: 1.8em; 
+    }
+
+}
