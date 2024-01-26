@@ -67,7 +67,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Omdirigerar till welcome.php vid en lyckad inloggning
             header("Location: welcome.php");
             exit();
-            
         } else {
             echo "Inloggningen misslyckades. Var god kontrollera din e-post och ditt lösenord.";
         }
@@ -77,12 +76,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/style.css">
     <title>Din-Todo</title>
 </head>
+
 <body>
     <div class="centered-container">
         <h2 class="page-title">Att göra-lista</h2>
@@ -105,4 +106,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     </div>
 </body>
+
 </html>
