@@ -135,3 +135,41 @@ form h3 {
     background-color: #2b3b93;
     color: #fcfcfc;
 }
+
+
+.task-container {
+    background: #fff;
+    margin: 10px auto; 
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 50%; 
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+}
+
+
+.task-container img {
+    max-width: 50px;
+    max-height: 50px;
+    margin-top: 10px;
+}
+
+.task-details {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.task-details p {
+    margin: 5px 0;
+}
+
+
+hr {
+    margin: 20px auto;
+    border: none;
+    border-top: 1px solid #ddd;
+}
