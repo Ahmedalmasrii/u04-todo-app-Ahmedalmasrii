@@ -113,3 +113,25 @@ form h3 {
     color: #555;
 }
 
+
+.message {
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 10px;
+    transition: transform 0.3s;
+}
+
+.message-success {
+    background-color: #D4EDDA;
+    color: #155724;
+}
+
+.message-error {
+    background-color: #F8D7DA;
+    color: #721C24;
+}
+
+.message-update {
+    background-color: #2b3b93;
+    color: #fcfcfc;
+}
