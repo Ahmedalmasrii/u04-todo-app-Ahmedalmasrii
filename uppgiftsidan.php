@@ -1,76 +1,74 @@
-<?php
-//  anslutningsfilen för att koppla upp mot databasen
+<?php include 'header.php';
+// Inkluderar filen för anslutning till databasen som använder PDO
 include "connect.php";
 
-// Funktion för att lägga till en ny uppgift
-function addTask($conn, $task)
-{
-    $stmt = $conn->prepare("INSERT INTO todo (attgora) VALUES (?)");
-    $stmt->bind_param("s", $task);
+// Loggaut-logik
+if (isset($_POST['logout'])) {
+    // Förstör sessionen för att logga ut användaren
+    session_unset(); // Tar bort alla sessionvariabler
+    session_destroy(); // Förstör sessionen
 
-    // Kolla om uppgiften har lagts till framgångsrikt, annars visa ett felmeddelande
-    if ($stmt->execute()) {
-        $message = "Du har nu lagt till en ny uppgift att göra!";
-        echo "<div class='success-message'>$message</div>";
-    } else {
-        $errorMessage = "Oops! Något gick fel när du försökte lägga till uppgiften: " . $stmt->error;
-        echo "<div class='error-message'>$errorMessage</div>";
+    // Omdirigera användaren till inloggningssidan eller hemsidan
+    header("Location: login.php"); // Ändra 'login.php' till rätt sökväg för din inloggningssida
+    exit();
+}
+// Funktion för att lägga till en ny uppgift
+function addTask($pdo, $task) {
+    try {
+        $stmt = $pdo->prepare("INSERT INTO todo (attgora) VALUES (:task)");
+        $stmt->execute([':task' => $task]);
+        echo "<div class='success-message'>Du har nu lagt till en ny uppgift att göra!</div>";
+    } catch (PDOException $e) {
+        echo "<div class='error-message'>Oops! Något gick fel när du försökte lägga till uppgiften: " . $e->getMessage() . "</div>";
     }
 }
 
 // Funktion för att markera en uppgift som klar
-function completeTask($conn, $id)
+function completeTask($pdo, $id)
 {
-    $stmt = $conn->prepare("UPDATE todo SET klar = 1 WHERE ID = ?");
-    $stmt->bind_param("i", $id);
-
-    // Kolla om uppgiften har markerats som klar, annars visa ett felmeddelande
-    if ($stmt->execute()) {
-        $message = "Bra jobbat! Uppgiften är nu klar!";
-        echo "<div class='success-message'>$message</div>";
-    } else {
-        $errorMessage = "Hoppsan! Något gick fel när du försökte markera uppgiften som klar: " . $stmt->error;
-        echo "<div class='error-message'>$errorMessage</div>";
+    try {
+        $stmt = $pdo->prepare("UPDATE todo SET klar = 1 WHERE ID = :id");
+        $stmt->execute([':id' => $id]);
+        echo "<div class='success-message'>Bra jobbat! Uppgiften är nu klar!</div>";
+    } catch (PDOException $e) {
+        echo "<div class='error-message'>Hoppsan! Något gick fel när du försökte markera uppgiften som klar: " . $e->getMessage() . "</div>";
     }
 }
 
 // Funktion för att uppdatera en befintlig uppgift
-function updateTask($conn, $id, $newTask)
+function updateTask($pdo, $id, $newTask)
 {
-    $stmt = $conn->prepare("UPDATE todo SET attgora = ? WHERE ID = ?");
-    $stmt->bind_param("si", $newTask, $id);
+    try {
+        // Använd placeholders i din SQL-fråga
+        $stmt = $pdo->prepare("UPDATE todo SET attgora = :newTask WHERE ID = :id");
+        
+        // Bind parametrar med associerade nycklar och värden
+        $stmt->bindParam(':newTask', $newTask);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
-    // Kolla om uppgiften har uppdaterats, annars visa ett felmeddelande
-    if ($stmt->execute()) {
-        $message = "Uppgiften är nu uppdaterad!";
-        echo "<div class='update-message'>$message</div>";
-    } else {
-        $errorMessage = "Oj då! Något gick fel när du försökte uppdatera uppgiften: " . $stmt->error;
-        echo "<div class='error-message'>$errorMessage</div>";
+        // Exekvera den förberedda frågan
+        $stmt->execute();
+
+        echo "<div class='update-message'>Uppgiften är nu uppdaterad!</div>";
+    } catch (PDOException $e) {
+        echo "<div class='error-message'>Oj då! Något gick fel när du försökte uppdatera uppgiften: " . $e->getMessage() . "</div>";
     }
 }
-
 // Funktion för att ta bort en uppgift
-function deleteTask($conn, $id)
-{
-    $stmt = $conn->prepare("DELETE FROM todo WHERE ID = ?");
-    $stmt->bind_param("i", $id);
-
-    // Kolla om uppgiften har tagits bort, annars visa ett felmeddelande
-    if ($stmt->execute()) {
-        $message = "Borttagning lyckad! Uppgiften är nu borttagen!";
-        echo "<div class='success-message'>$message</div>";
-    } else {
-        $errorMessage = "Oops! Något gick fel när du försökte ta bort uppgiften: " . $stmt->error;
-        echo "<div class='error-message'>$errorMessage</div>";
+function deleteTask($pdo, $id) {
+    try {
+        $stmt = $pdo->prepare("DELETE FROM todo WHERE ID = :id");
+        $stmt->execute([':id' => $id]);
+        echo "<div class='success-message'>Borttagning lyckad! Uppgiften är nu borttagen!</div>";
+    } catch (PDOException $e) {
+        echo "<div class='error-message'>Oops! Något gick fel när du försökte ta bort uppgiften: " . $e->getMessage() . "</div>";
     }
 }
-
 // Funktion för att hämta alla uppgifter från databasen
-function getTasks($conn)
+function getTasks($pdo)
 {
-    $result = $conn->query("SELECT * FROM todo");
-    return $result->fetch_all(MYSQLI_ASSOC);
+    $stmt = $pdo->query("SELECT * FROM todo");
+    return $stmt->fetchAll(PDO::FETCH_ASSOC); 
 }
 
 // Hantera formulärinskick
@@ -78,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Lägga till en ny uppgift
     if (isset($_POST['addTask'])) {
         $newTask = $_POST['newTask'];
-        addTask($conn, $newTask);
+        addTask($pdo, $newTask);
     }
 
     // **Visa och hantera alla uppgifter:**
@@ -87,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // som visar om den är klar eller ej. För varje uppgift finns även möjlighet att markera som slutförd,
     // uppdatera eller radera den genom ett formulär. All information visas i en HTML-container med klassen `task-container`.
     if (isset($_POST['showAllTasks'])) {
-        $tasks = getTasks($conn);
+        $tasks = getTasks($pdo);
         foreach ($tasks as $task) {
             echo "<div class='task-container custom-task-container'>
             <!-- <p class='task-id'>ID: " . $task['ID'] . "</p> -->
@@ -111,27 +109,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Markerar en uppgift som klar
     if (isset($_POST['completeTask'])) {
         $taskId = $_POST['taskId'];
-        completeTask($conn, $taskId);
+        completeTask($pdo, $taskId);
     }
 
     // Uppdaterar en uppgift
     if (isset($_POST['updateTask'])) {
         $taskId = $_POST['taskId'];
         $updatedTask = $_POST['updatedTask'];
-        updateTask($conn, $taskId, $updatedTask);
+        updateTask($pdo, $taskId, $updatedTask);
     }
 
     // Tar bort en uppgift
     if (isset($_POST['deleteTask'])) {
         $taskId = $_POST['taskId'];
-        deleteTask($conn, $taskId);
+        deleteTask($pdo, $taskId);
     }
 }
 
 // Stänger anslutningen till databasen
-$conn->close();
-?>
+$pdo = null;
 
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -152,6 +150,7 @@ $conn->close();
     <form method="post" class="form uppgiftsidan">
         <button type="submit" name="showAllTasks" class="button">Visa alla uppgifter</button>
     </form>
+    
 </body>
 
 </html>
