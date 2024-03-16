@@ -5,39 +5,31 @@ session_start();
 // Inkluderar filen med anslutningsdetaljer till  själva databasen
 include "connect.php";
 
+
 // Denna funktion är för att registrera en ny användare i databasen
-function registerUser($conn, $name, $email, $password)
+function registerUser($pdo, $name, $email, $password)
 {
-    // Krypterar användarens lösenordet med bcrypt
     $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-
-    // Förbereder ett SQL-uttalande för att infoga användardata i tabellen 'users'
-    $stmt = $conn->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $name, $email, $hashedPassword);
-    $stmt->execute();
+    $sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$name, $email, $hashedPassword]);
 }
-// Funktion för att kontrollera och logga in en användare
-function loginUser($conn, $email, $password)
+
+function loginUser($pdo, $email, $password)
 {
-    // Förbereder ett SQL-uttalande för att hämta användar-ID och krypterat lösenord baserat på e-post som har matats in vid skapandet
-    $stmt = $conn->prepare("SELECT id, password FROM users WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $stmt->store_result();
+    $sql = "SELECT id, password FROM users WHERE email = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$email]);
+    $user = $stmt->fetch();
 
-    // Kontrollerar om  användare med den angivna e-postadressen finns i databasen
-    if ($stmt->num_rows > 0) {
-        $stmt->bind_result($userId, $hashedPassword);
-        $stmt->fetch();
-
-        // Verifierar det angivna lösenordet mot det krypterade lösenordet
-        if (password_verify($password, $hashedPassword)) {
-            return $userId; // Returnerar användar-ID om inloggningen lyckas
-        }
+    if ($user && password_verify($password, $user['password'])) {
+        return $user['id']; // Returnerar användar-ID om inloggningen lyckas
     }
 
     return false; // Returnerar false om inloggningen misslyckas
 }
+
+
 
 // Kontrollerar om förfrågningsmetoden är POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -48,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $password = $_POST['password'];
 
         // Anropar funktionen för att registrera en ny användare
-        registerUser($conn, $name, $email, $password);
+        registerUser($pdo, $name, $email, $password); // Ändrat från $conn till $pdo
         echo "Användaren registrerad framgångsrikt!";
     }
 
@@ -58,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $password = $_POST['loginPassword'];
 
         // Anropar funktionen för att kontrollera och logga in användaren i hemsidan
-        $userId = loginUser($conn, $email, $password);
+        $userId = loginUser($pdo, $email, $password); // Ändrat från $conn till $pdo
 
         if ($userId) {
             // Sätter användar-ID i sessionen
@@ -85,6 +77,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
+<header>
+      
+    </header>
     <div class="centered-container">
         <h2 class="page-title">Att göra-lista</h2>
         <div class="form-container">
